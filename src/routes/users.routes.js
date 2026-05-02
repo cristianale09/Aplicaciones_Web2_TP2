@@ -1,13 +1,16 @@
 import { Router } from "express";
 import { readFile, writeFile } from "fs/promises";
 
+//Creamos un router para manejar las rutas relacionadas con los usuarios
+const router = Router();
+
 /*RUTAS DE USUARIOS*/
-const fileUsers = await readFile('../data/users.json', 'utf-8');
+const fileUsers = await readFile('./src/data/users.json', 'utf-8');
 const userdata = JSON.parse(fileUsers);
 
 
 //Obtener usuario por ID
-app.get('/byId/:id', (req, res) => {
+router.get('/byId/:id', (req, res) => {
     const id = parseInt(req.params.id, 10);
 
     if (isNaN(id)) {
@@ -25,7 +28,7 @@ app.get('/byId/:id', (req, res) => {
 
 
 //Obtener usuario por nombre de usuario
-app.get('/byUsername/:username', (req, res) => {
+router.get('/byUsername/:username', (req, res) => {
     const username = req.params.username.toLowerCase();
 
     const result = userdata.find(u =>  
@@ -40,7 +43,7 @@ app.get('/byUsername/:username', (req, res) => {
 });
 
 //Crear un nuevo usuario
-app.post('/users', (req, res) => {
+router.post('/', (req, res) => {
     const { name } = req.body;     
     const { email } = req.body;
 
@@ -63,7 +66,7 @@ app.post('/users', (req, res) => {
 });
 
 //Login de usuario
-app.post('/login', (req, res) => {
+router.post('/login', (req, res) => {
     const { name } = req.body;    
     const { email } = req.body;
 
@@ -88,7 +91,7 @@ app.post('/login', (req, res) => {
 });
 
 //Actualizar información de un usuario
-app.put('/users/:id', (req, res) => {
+router.put('/:id', (req, res) => {
     const id = parseInt(req.params.id, 10);
     const { name } = req.body;
     const { email } = req.body;

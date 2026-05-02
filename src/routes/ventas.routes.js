@@ -1,12 +1,15 @@
 import { Router } from "express";
 import { readFile, writeFile } from "fs/promises";
 
+//Creamos un router para manejar las rutas relacionadas con los usuarios
+const router = Router();
+
 /*RUTAS DE USUARIOS*/
-const fileUsers = await readFile('../data/users.json', 'utf-8');
+const fileUsers = await readFile('./src/data/users.json', 'utf-8');
 const userdata = JSON.parse(fileUsers);
 
 //Obtener venta por id_venta
-app.get('/sales/:id', (req, res) => {
+router.get('/sales/:id', (req, res) => {
     const id = parseInt(req.params.id, 10);
 
     const sale = sales.find(s => s.id === id);
@@ -19,7 +22,7 @@ app.get('/sales/:id', (req, res) => {
 });
 
 //Obtener ventas por vendedor
-app.get('/sales/seller/:seller', (req, res) => {
+router.get('/sales/seller/:seller', (req, res) => {
     const seller = req.params.seller.toLowerCase();
 
     const result = sales.filter(s =>
@@ -34,7 +37,7 @@ app.get('/sales/seller/:seller', (req, res) => {
 });
 
 //crear nueva venta
-app.post('/sales', (req, res) => {
+router.post('/sales', (req, res) => {
     const { product, seller, price, date } = req.body;
 
     if (!product || !seller || !price || !date) {
@@ -58,7 +61,7 @@ app.post('/sales', (req, res) => {
 });
 
 //buscar venta por rango de precios
-app.post('/sales/filter', (req, res) => {
+router.post('/sales/filter', (req, res) => {
     const { min, max } = req.body;
 
     if (min == null || max == null) {
@@ -73,7 +76,7 @@ app.post('/sales/filter', (req, res) => {
 });
 
 //actualizar venta por id_venta
-app.put('/sales/:id', (req, res) => {
+router.put('/sales/:id', (req, res) => {
     const id = parseInt(req.params.id, 10);
     const { product, seller, price, date } = req.body;
 
@@ -95,7 +98,7 @@ app.put('/sales/:id', (req, res) => {
 });
 
 //eliminar venta por id_venta
-app.delete('/sales/:id', (req, res) => {
+router.delete('/sales/:id', (req, res) => {
     const id = parseInt(req.params.id, 10);
 
     const index = sales.findIndex(s => s.id === id);

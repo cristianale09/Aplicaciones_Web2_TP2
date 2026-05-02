@@ -1,17 +1,20 @@
 import { Router } from "express";
 import { readFile, writeFile } from "fs/promises";
 
+//Creamos un router para manejar las rutas relacionadas con los usuarios
+const router = Router();
+
 /*RUTAS DE USUARIOS*/
-const fileUsers = await readFile('../data/users.json', 'utf-8');
+const fileUsers = await readFile('./src/data/users.json', 'utf-8');
 const userdata = JSON.parse(fileUsers);
 
 //listar todos los libros
-app.get('/books', (req, res) => {
+router.get('/books', (req, res) => {
     res.status(200).json(books);
 });
 
 //Obtener libro por ID
-app.get('/books/:id', (req, res) => {
+router.get('/books/:id', (req, res) => {
     const id = parseInt(req.params.id, 10);
 
     const book = books.find(b => b.id === id);
@@ -24,7 +27,7 @@ app.get('/books/:id', (req, res) => {
 });
 
 //Obtener libro por autor
-app.get('/books/author/:author', (req, res) => {
+router.get('/books/author/:author', (req, res) => {
     const author = req.params.author.toLowerCase();
 
     const result = books.filter(b => 
@@ -39,7 +42,7 @@ app.get('/books/author/:author', (req, res) => {
 });
 
 //crear un nuevo libro
-app.post('/books', (req, res) => {
+router.post('/books', (req, res) => {
     const { title, author, category } = req.body;
 
     if (!title || !author || !category) {
@@ -62,7 +65,7 @@ app.post('/books', (req, res) => {
 });
 
 //buscar libro por categoria
-app.post('/books/search', (req, res) => {
+router.post('/books/search', (req, res) => {
     const { category } = req.body;
 
     if (!category) {
@@ -77,7 +80,7 @@ app.post('/books/search', (req, res) => {
 });
 
 //actualizar libro por ID
-app.put('/books/:id', (req, res) => {
+router.put('/books/:id', (req, res) => {
     const id = parseInt(req.params.id, 10);
     const { title, author, category } = req.body;
 
