@@ -1,5 +1,4 @@
 import express from 'express';
-import {readFile, writeFile} from 'fs/promises';
 import usersRoutes from './routes/users.routes.js';
 import productsRoutes from './routes/productos.routes.js';
 import salesRoutes from './routes/ventas.routes.js';

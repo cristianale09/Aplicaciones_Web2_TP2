@@ -9,26 +9,8 @@ const fileUsers = await readFile('./src/data/users.json', 'utf-8');
 const userdata = JSON.parse(fileUsers);
 
 
-//Obtener usuario por ID
-router.get('/byId/:id', (req, res) => {
-    const id = parseInt(req.params.id, 10);
-
-    if (isNaN(id)) {
-        return res.status(400).json({ message: 'ID inválido' });
-    }
-
-    const user = userdata.find(e => e.id === id);
-
-    if (user) {
-        return res.status(200).json(user);
-    }
-
-    return res.status(404).json({ message: 'Usuario no encontrado' });
-});
-
-
 //Obtener usuario por nombre de usuario
-router.get('/byUsername/:username', (req, res) => {
+router.get('/username/:username', (req, res) => {
     const username = req.params.username.toLowerCase();
 
     const result = userdata.find(u =>  
@@ -42,19 +24,64 @@ router.get('/byUsername/:username', (req, res) => {
     }
 });
 
-//Crear un nuevo usuario
-router.post('/', (req, res) => {
-    const { name } = req.body;     
-    const { email } = req.body;
 
-    if (!name || !email) { //si falta alguno de los campos necesarios para crear un usuario, se devuelve un error 400 indicando que faltan datos.
-        return res.status(400).json({ message: 'Faltan datos' }); 
+//Obtener usuario por ID
+router.get('/:id', (req, res) => {
+    const id = parseInt(req.params.id, 10);
+
+    if (isNaN(id)) {
+        return res.status(400).json({ message: 'ID inválido' });
     }
 
-    const newUser = { //se crea un nuevo objeto de usuario con un ID generado automáticamente (basado en la longitud actual del array de usuarios), el nombre y el correo electrónico proporcionados en el cuerpo de la solicitud.
-        id: userdata.length + 1,
-        name,
-        email
+    const user = userdata.find(e => e.id_usuario === id);
+
+    if (user) {
+        return res.status(200).json(user);
+    }
+
+    return res.status(404).json({ message: 'Usuario no encontrado' });
+});
+
+
+//Login de usuario
+router.post('/login', (req, res) => {
+    const { username, contraseña } = req.body;
+
+    if (!username || !contraseña) {
+        return res.status(400).json({ message: 'Faltan credenciales' });
+    }
+
+    const user = userdata.find(u => 
+        u.username === username && u.contraseña === contraseña
+    );
+
+    if (user) {
+        return res.status(200).json({
+            message: 'Login exitoso',
+            user
+        });
+    }
+
+    return res.status(401).json({
+        message: 'Credenciales inválidas'
+    });
+});
+
+
+//Crear un nuevo usuario
+router.post('/', (req, res) => {
+    const { nombre, apellido, username, contraseña } = req.body;
+
+    if (!nombre || !apellido || !username || !contraseña) {
+        return res.status(400).json({ message: 'Faltan datos' });
+    }
+
+    const newUser = {
+        id_usuario: userdata.length + 1,
+        nombre,
+        apellido,
+        username,
+        contraseña
     };
 
     userdata.push(newUser);
@@ -65,30 +92,6 @@ router.post('/', (req, res) => {
     });
 });
 
-//Login de usuario
-router.post('/login', (req, res) => {
-    const { name } = req.body;    
-    const { email } = req.body;
-
-    if (!email || !name) {
-        return res.status(400).json({ message: 'Faltan credenciales' });
-    }
-
-    const user = userdata.find(u => 
-        u.email === email && u.name === name
-    );
-
-    if (user) {
-        return res.status(200).json({
-            message: 'Login exitoso',
-            user
-        });
-    } else {
-        return res.status(401).json({
-            message: 'Credenciales inválidas'
-        });
-    }
-});
 
 //Actualizar información de un usuario
 router.put('/:id', (req, res) => {
