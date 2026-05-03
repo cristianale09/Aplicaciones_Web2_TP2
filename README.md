@@ -2,106 +2,173 @@
 
 ## Descripción:
 
-  API REST desarrollada con Node.js y Express para gestionar usuarios, productos (libros) y ventas.
+API REST desarrollada con Node.js y Express para gestionar:
+
+👤 Usuarios
+📚 Productos (libros)
+💰 Ventas
 
 ---
 
-## Instalación:
+📁 Estructura del proyecto
 
-```bash
-npm install
+```
+
+trabajo_practico2/
+│
+├── node_modules/
+├── src/
+│   ├── data/
+│   │   ├── users.json
+│   │   ├── productos.json
+│   │   └── ventas.json
+│   │
+│   ├── routes/
+│   │   ├── users.routes.js
+│   │   ├── productos.routes.js
+│   │   └── ventas.routes.js
+│   │
+│   └── index.js
+│
+├── package.json
+├── package-lock.json
+├── .gitignore
+└── README.md
+
 ```
 
 ---
 
-## Ejecución:
+⚙️ Instalación
 
-```bash
-node src/index.js
+Clonar repositorio:
+```
+
+git clone https://github.com/cristianale09/Aplicaciones_Web2_TP2.git
+
+```
+
+Entrar al proyecto
+
+```
+
+cd trabajo_practico2
+
+```
+
+Instalar dependencias
+```
+
+npm install
+
+```
+
+---
+
+▶️ Ejecución
+
+```
+
+npm start
+
 ```
 
 Servidor en:
 
 ```
+
 http://localhost:3000
+
 ```
 
 ---
 
-## Endpoints:
 
-### Usuarios (`/users`):
+🔗 Endpoints
 
-* GET `/users/byId/:id` → Obtener usuario por ID
-* GET `/users/byUsername/:username` → Obtener usuario por username
-* POST `/users` → Crear usuario
+👤 Usuarios (`/users`):
+
+* GET `/users/username/:username` → Obtener usuario por username
+* GET `/users/:id` → Obtener usuario por ID
 * POST `/users/login` → Login
+* POST `/users` → Crear usuario
 * PUT `/users/:id` → Actualizar usuario
 
-#### Ejemplo POST /users
+📥 Ejemplo crear usuario
 
 ```json
+
+POST /users
 {
-  "name": "Juan",
-  "email": "juan@email.com"
+  "nombre": "Juan",
+  "apellido": "Pérez",
+  "username": "juanperez",
+  "contraseña": "123456"
 }
+
 ```
 
 ---
 
-###: Productos (libros) (`/productos`)
+📚 Productos (/productos)
+  
+* GET `/productos/author/:author` → Buscar por autor
+* GET `/productos` → Listar libros
+* GET `/productos/:id` → Obtener libro por ID
+* POST `/productos/search` → Buscar por categoría
+* POST `/productos` → Crear libro
+* PUT `/productos/:id` → Actualizar libro
 
-⚠️ Nota: las rutas incluyen `/books`
-
-* GET `/productos/books` → Listar libros
-* GET `/productos/books/:id` → Obtener libro por ID
-* GET `/productos/books/author/:author` → Buscar por autor
-* POST `/productos/books` → Crear libro
-* POST `/productos/books/search` → Buscar por categoría
-* PUT `/productos/books/:id` → Actualizar libro
-
-#### Ejemplo POST /productos/books
+📥 Ejemplo crear producto
 
 ```json
+
+POST /productos
 {
-  "title": "El Principito",
-  "author": "Saint-Exupéry",
-  "category": "Ficción"
+  "nombre": "El Principito",
+  "descripcion": "cuento sobre un pequeño príncipe que deja su asteroide para explorar el universo.",
+  "precio": 25.50,  
+  "categoria": "Ficción",
+  "author": "Antoine de Saint-Exupéry"
 }
+
 ```
 
 ---
 
-###: Ventas (`/ventas`)
+💰 Ventas (/ventas)
 
-Nota: las rutas incluyen `/sales`
+* GET `/ventas/seller/:vendedor` → Ventas por vendedor
+* GET `/ventas/:id` → Obtener venta por ID
+* POST `/ventas` → Crear venta
+* POST `/ventas/filter` → Filtrar por precio
+* PUT `/ventas/:id` → Actualizar venta
+* DELETE `/ventas/:id` → Eliminar venta
 
-* GET `/ventas/sales/:id` → Obtener venta por ID
-* GET `/ventas/sales/seller/:seller` → Ventas por vendedor
-* POST `/ventas/sales` → Crear venta
-* POST `/ventas/sales/filter` → Filtrar por precio
-* PUT `/ventas/sales/:id` → Actualizar venta
-* DELETE `/ventas/sales/:id` → Eliminar venta
-
-#### Ejemplo POST /ventas/sales
+📥 Ejemplo crear venta
 
 ```json
+
+POST /ventas
 {
-  "product": "Libro A",
-  "seller": "Juan",
-  "price": 1000,
-  "date": "2024-05-01"
+  "id_libro": 1,
+  "vendedor": 1,
+  "total": 25.50,
+  "fecha": "2026-04-01"
 }
+
 ```
 
 ---
 
-## Pruebas:
+🧪 Pruebas
 
 Ejemplo:
 
 ```
-GET http://localhost:3000/users/byId/1
+
+GET http://localhost:3000/users/1
+
 ```
 
 Se recomienda usar:
@@ -109,3 +176,12 @@ Se recomienda usar:
 * Postman
 * Insomnia
 * Thunder Client
+
+⚠️ Consideraciones
+* Los datos se almacenan en archivos JSON
+* No hay base de datos
+* Los datos se manejan en memoria
+
+
+👨‍💻 Autor
+Cristian Ale
